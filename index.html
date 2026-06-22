@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Торты</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --cream: #F9F3EC;
+    --warm-white: #FDF9F5;
+    --chocolate: #2C1A0E;
+    --mocha: #5C3D2E;
+    --caramel: #C4862B;
+    --blush: #E8C4A0;
+    --muted: #8C6E5A;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--cream); color: var(--chocolate); font-family: 'Inter', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; padding: 40px 24px; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,134,43,0.13) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    animation: pulse 6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { transform: translate(-50%,-50%) scale(1); opacity:.6; }
+    50%      { transform: translate(-50%,-50%) scale(1.15); opacity:1; }
+  }
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--caramel); margin-bottom: 24px;
+    opacity:0; animation: fadeUp 1s ease forwards .3s;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px,10vw,120px); font-weight: 300;
+    line-height: .9; color: var(--chocolate); letter-spacing: -.02em;
+    opacity:0; animation: fadeUp 1s ease forwards .5s;
+  }
+  .hero-title em { font-style: italic; color: var(--caramel); }
+  .hero-sub {
+    font-size: 14px; color: var(--muted); margin-top: 28px; letter-spacing: .05em;
+    opacity:0; animation: fadeUp 1s ease forwards .8s;
+  }
+  .hero-scroll {
+    position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    opacity:0; animation: fadeUp 1s ease forwards 1.2s;
+  }
+  .hero-scroll span { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--caramel), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0%  { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100%{ transform: scaleY(0); transform-origin: bottom; }
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(30px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  /* SECTION */
+  .cakes-section { padding: 80px 24px 120px; max-width: 1200px; margin: 0 auto; }
+  .section-label { font-size: 10px; letter-spacing: .35em; text-transform: uppercase; color: var(--caramel); margin-bottom: 60px; text-align: center; }
+  .divider { width: 1px; height: 60px; background: linear-gradient(to bottom, transparent, var(--caramel), transparent); margin: 0 auto 80px; }
+
+  /* CARD */
+  .cake-card {
+    display: grid; grid-template-columns: 1fr 1fr;
+    margin-bottom: 120px; background: var(--warm-white);
+    border-radius: 2px; overflow: hidden;
+    box-shadow: 0 2px 40px rgba(44,26,14,.06);
+    opacity:0; transform: translateY(50px);
+    transition: opacity .8s ease, transform .8s ease;
+  }
+  .cake-card.visible { opacity:1; transform: translateY(0); }
+  .cake-card:nth-child(even) .cake-image { order: 2; }
+  .cake-card:nth-child(even) .cake-content { order: 1; }
+
+  .cake-image {
+    position: relative; min-height: 440px; overflow: hidden;
+    background: var(--blush);
+  }
+  .cake-image img {
+    width: 100%; height: 100%; object-fit: cover;
+    position: absolute; inset: 0;
+    transition: transform .8s cubic-bezier(.25,.46,.45,.94);
+  }
+  .cake-card:hover .cake-image img { transform: scale(1.05); }
+
+  /* placeholder when no image */
+  .cake-image .no-img {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 12px; letter-spacing: .15em;
+    text-transform: uppercase; opacity: .4;
+  }
+
+  .cake-content { padding: 52px 48px; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+
+  .cake-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 80px; font-weight: 300; color: var(--blush); line-height: 1;
+  }
+  .cake-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(26px,3.5vw,40px); font-weight: 400;
+    color: var(--chocolate); line-height: 1.2;
+    border-bottom: 1px solid var(--blush); padding-bottom: 12px;
+  }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field-lbl { font-size: 9px; letter-spacing: .3em; text-transform: uppercase; color: var(--caramel); }
+  .field-val { font-size: 14px; color: var(--mocha); line-height: 1.7; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .tag {
+    font-size: 12px; color: var(--mocha);
+    background: rgba(196,134,43,.08); border: 1px solid rgba(196,134,43,.2);
+    border-radius: 20px; padding: 4px 14px;
+  }
+
+  footer { text-align: center; padding: 40px 24px; border-top: 1px solid rgba(196,134,43,.15); color: var(--muted); font-size: 12px; letter-spacing: .1em; }
+
+  @media (max-width: 768px) {
+    .cake-card { grid-template-columns: 1fr; }
+    .cake-card:nth-child(even) .cake-image { order: 0; }
+    .cake-card:nth-child(even) .cake-content { order: 0; }
+    .cake-image { min-height: 280px; }
+    .cake-content { padding: 32px 24px; }
+    .cake-num { font-size: 56px; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <p class="hero-eyebrow">Авторская кондитерская</p>
+  <h1 class="hero-title">Каждый<br><em>торт</em>  - <br>история</h1>
+  <p class="hero-sub">Вкус · Текстура · Настроение</p>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Смотреть</span>
+  </div>
+</section>
+
+<section class="cakes-section">
+  <p class="section-label">Коллекция</p>
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       ТОРТ 1  -  меняй только содержимое между тегами
+       img src: путь к фото (можно просто положить рядом с файлом)
+  ============================================================ -->
+  <article class="cake-card">
+    <div class="cake-image">
+      <!-- ФОТО: замени src на путь к своей картинке, например: src="tort1.jpg" -->
+    <img src="1.png" alt="Торт 1">
+      <div class="no-img"></div>
+    </div>
+    <div class="cake-content">
+      <div class="cake-name"><h2>«Банан-Шоколад»</h2></div>
+      <div class="field">
+        <span class="field-lbl">Вкус</span>
+        <p class="field-val">Шоколад, банан, карамель</p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Описание</span>
+        <p>🍫 Шоколадно-банановый бисквит  -  влажный и ароматный.<p>
+🍌 Пропитка и карамель с бананами  -  для тех, кто любит по-настоящему банановый вкус.<p>
+🥄 Шоколадный крем  -  нежный, маслянистый, тает во рту.<p>
+✨ Хрустящий слой с шариками  -  сюрприз, который хочется искать снова.</p>
+<p><p><p></p><p><p><p></p>Этот торт  -  как банановое молоко в шоколаде, только в миллион раз вкуснее.
+      </div>
+      <div class="field">
+        <span class="field-lbl">Цена за 1 кг - 2000₽</span>
+        <p class="field-val"></p>
+      </div>
+      <div class="tags">
+        <span class="tag">сладкий</span>
+        <span class="tag">насыщенный</span>
+        <span class="tag">шоколадный</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============================================================
+       ТОРТ 2
+  ============================================================ -->
+  <article class="cake-card">
+    <div class="cake-image">
+      <!-- ФОТО: замени src на путь к своей картинке, например: src="tort1.jpg" -->
+    <img src="2.png" alt="Торт 2">
+      <div class="no-img"></div>
+    </div>
+    <div class="cake-content">
+      <div class="cake-name"><h2>«Варёная сгущенка-карамелизированные орехи»</h2></div>
+      <div class="field">
+        <span class="field-lbl">Вкус</span>
+        <p class="field-val">Варёная сгущенка, орехи</p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Описание</span>
+        <p>🥄 Коржи и крем  -  с варёной сгущёнкой.</p>
+🥜 Карамелизированный арахис (тот самый хруст).</p>
+🍰 Покрытие  -  нежный крем-чиз.</p>
+<p><p><p></p>Вкус как у детства: знакомый, тягучий, с ореховой ноткой и сливочным послевкусием. Просто и божественно.
+      </div>
+      <div class="field">
+        <span class="field-lbl">Цена за 1 кг - 2200₽</span>
+        <p class="field-val"></p>
+      </div>
+      <div class="tags">
+        <span class="tag">карамельный</span>
+        <span class="tag">ореховый</span>
+        <span class="tag">домашний</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============================================================
+       ТОРТ 3
+  ============================================================ -->
+  <article class="cake-card">
+    <div class="cake-image">
+      <!-- ФОТО: замени src на путь к своей картинке, например: src="tort1.jpg" -->
+    <img src="3.png" alt="Торт 3">
+      <div class="no-img"></div>
+    </div>
+    <div class="cake-content">
+      <div class="cake-name"><h2>«Халва-Кофе»</h2></div>
+      <div class="field">
+        <span class="field-lbl">Вкус</span>
+        <p class="field-val">Кофе, халва,</p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Описание</span>
+        <p>☕ Кофейный бисквит с кофейной пропиткой  -  для настоящих кофеманов.<p></p>
+🥄 Крем-мусс с халвой  -  нежный, воздушный, с той самой восточной ноткой.<p></p>
+🍫 Халвичный ганаш  -  густой, тягучий, пропитывает каждый кусочек.</p>
+<p><p><p></p>Это не просто торт, это кофе с халвой в десертном исполнении. Взрослый, благородный, с характером.
+      </div>
+      <div class="field">
+        <span class="field-lbl">Цена за 1 кг - 2000₽</span>
+        <p class="field-val"></p>
+      </div>
+      <div class="tags">
+        <span class="tag">кофейный</span>
+        <span class="tag">халвичный</span>
+        <span class="tag">насыщенный</span>
+      </div>
+    </div>
+  </article>
+  <!-- ============================================================
+       ТОРТ 4
+  ============================================================ -->
+  <article class="cake-card">
+    <div class="cake-image">
+      <!-- ФОТО: замени src на путь к своей картинке, например: src="tort1.jpg" -->
+    <img src="4.png" alt="Торт 4">
+      <div class="no-img"></div>
+    </div>
+    <div class="cake-content">
+      <div class="cake-name"><h2>«Вишня-Шоколад»</h2></div>
+      <div class="field">
+        <span class="field-lbl">Вкус</span>
+        <p class="field-val">Вишня, Шоколад</p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Описание</span>
+        <p>🍫 Шоколадные коржи  -  нежные, без раскатки, почти как брауни.
+🥄 Сливочный крем для начинки  -  воздушный и тающий.<p></p>
+🍒 Вишня с коньяком  -  это та самая изюминка: кисло-сладкая, чуть пьяная, идеально балансирует шоколад.<p></p>
+🍰 Покрытие  -  шоколадный крем-чиз, бархатистый и гладкий.<p></p>
+<p><p><p></p>Это как вишнёвый пирог от бабушки, но который вырос и пошёл на свидание 😄.
+</p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Цена за 1 кг - 2200₽</span>
+        <p class="field-val"></p>
+      </div>
+      <div class="tags">
+        <span class="tag">насыщенный</span>
+        <span class="tag">кисло-сладкий</span>
+        <span class="tag">шоколадный</span>
+        
+      </div>
+    </div>
+  </article>
+
+
+    <!-- ============================================================
+       ТОРТ 5
+  ============================================================ -->
+  <article class="cake-card">
+    <div class="cake-image">
+      <!-- ФОТО: замени src на путь к своей картинке, например: src="tort1.jpg" -->
+    <img src="5.png" alt="Торт 5">
+      <div class="no-img"></div>
+    </div>
+    <div class="cake-content">
+      <div class="cake-name"><h2>«Арахис-солёный крекер»</h2></div>
+      <div class="field">
+        <span class="field-lbl">Вкус</span>
+        <p class="field-val">Арахис, солёная карамель, крекер</p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Описание</span>
+        <p>🍫 Арахисовый бисквит  -  ореховый, ароматный, плотный.<p></p>
+🥛 Молочная пропитка  -  делает его нежным и сочным.<p></p>
+🥄 Крем-мусс с арахисовой пастой  -  воздушный, маслянистый, с ярким вкусом арахиса.<p></p>
+🍪 Прослойка с солёным крекером и молочным шоколадом  -  вот это хит! Солёное + сладкое + хруст  -  идеальный баланс.<p></p>
+<p><p><p></p>Это торт для тех, кто любит эксперименты. Солёный крекер в десерте  -  звучит странно, но на деле это любовь с первого кусочка.
+</p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Цена за 1 кг - 2200₽</span>
+        <p class="field-val"></p>
+      </div>
+      <div class="tags">
+        <span class="tag">солёно-сладкий</span>
+        <span class="tag">хрустящий</span>
+        <span class="tag">арахис</span>
+        
+      </div>
+    </div>
+  </article>
+
+
+  <!-- Копируй блок выше чтобы добавить торт -->
+ <!-- ============================================================
+       ТОРТ 6
+  ============================================================ -->
+  <article class="cake-card">
+    <div class="cake-image">
+      <!-- ФОТО: замени src на путь к своей картинке, например: src="tort1.jpg" -->
+    <img src="6.png" alt="Торт 6">
+      <div class="no-img"></div>
+    </div>
+    <div class="cake-content">
+      <div class="cake-name"><h2>«Апельсин-Малина»</h2></div>
+      <div class="field">
+        <span class="field-lbl">Вкус</span>
+        <p class="field-val">Апельсин, малина</p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Описание</span>
+        <p>🍊 Апельсиновый бисквит с апельсиновой пропиткой  -  сочный и яркий.<p></p>
+🥄 Йогуртовый крем-мусс с малиной  -  воздушный, кисло-сладкий, как облачко.<p></p>
+🍓 Малиновый соус и апельсиновый соус  -  две ягодно-цитрусовые ноты в одном торте.<p></p>
+🍰 Покрытие  -  крем-чиз на сливочном масле, нежный и бархатистый.<p></p>
+<p><p><p></p>Этот торт — как солнечный завтрак в жаркой стране. Лёгкий, яркий, с цитрусовой кислинкой и ягодной сладостью.
+</p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Цена за 1 кг - 2200₽</span>
+        <p class="field-val"></p>
+      </div>
+      <div class="tags">
+        <span class="tag">апельсиновый</span>
+        <span class="tag">освежающий</span>
+        <span class="tag">летний</span>
+        
+      </div>
+    </div>
+  </article>
+   <!-- ============================================================
+       ТОРТ 7
+  ============================================================ -->
+  <article class="cake-card">
+    <div class="cake-image">
+      <!-- ФОТО: замени src на путь к своей картинке, например: src="tort1.jpg" -->
+    <img src="7.png" alt="Торт 7">
+      <div class="no-img"></div>
+    </div>
+    <div class="cake-content">
+      <div class="cake-name"><h2>«Цитрусовый-микс»</h2></div>
+      <div class="field">
+        <span class="field-lbl">Вкус</span>
+        <p class="field-val">Апельсин, лимон, лайм</p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Описание</span>
+        <p>🍋 Лаймовый бисквит с лаймовой пропиткой — свежий, ароматный, с характерной кислинкой.<p></p>
+🍫 Крем с белым шоколадом — нежный, молочный, смягчает цитрусовую яркость.<p></p>
+🍮 Лимонный мусс с диском из лимонного компотэ — кисло-сладкое облачко внутри.<p></p>
+🍊 Апельсиновый мусс с диском из апельсинового компотэ — солнечный, сочный, будто кусочек лета.<p></p>
+🍰 Покрытие — сырный крем на сливочном масле, гладкий и бархатистый.<p></p>
+<p><p><p></p>Это торт для ценителей сложного вкуса. Три цитруса в одной тарелке — не перебор, а идеальный баланс кислого, сладкого и нежного.
+</p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Цена за 1 кг - 2200₽</span>
+        <p class="field-val"></p>
+      </div>
+      <div class="tags">
+        <span class="tag">яркий</span>
+        <span class="tag">сочный</span>
+        <span class="tag">летний</span>
+        
+      </div>
+    </div>
+  </article>
+     <!-- ============================================================
+       ТОРТ 8
+  ============================================================ -->
+  <article class="cake-card">
+    <div class="cake-image">
+      <!-- ФОТО: замени src на путь к своей картинке, например: src="tort1.jpg" -->
+    <img src="8.png" alt="Торт 8">
+      <div class="no-img"></div>
+    </div>
+    <div class="cake-content">
+      <div class="cake-name"><h2>«Малина-Черника»</h2></div>
+      <div class="field">
+        <span class="field-lbl">Вкус</span>
+        <p class="field-val">Малина, Черника </p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Описание</span>
+        <p>🍰 Ванильный бисквит — мягкий, пушистый, как облачко.<p></p>
+🥛 Молочная пропитка — делает его сочным и нежным.<p></p>
+🫐 Крем с черникой для начинки — ягодный, сливочный, с приятной кислинкой.<p></p>
+💜 Мусс черника-малина — два дабл-диска, воздушных и ярких на вкус.<p></p>
+🍰 Покрытие — сырный крем на сливочном масле, гладкий и бархатистый.<p></p>
+<p><p><p></p>Этот торт — как ягодное лето в лучшем виде. Не переслащённый, с балансом кислинки и нежности.
+</p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Цена за 1 кг - 2200₽</span>
+        <p class="field-val"></p>
+      </div>
+      <div class="tags">
+        <span class="tag">черничный</span>
+        <span class="tag">молочный</span>
+        <span class="tag">насыщенный</span>
+        
+      </div>
+    </div>
+  </article>
+       <!-- ============================================================
+       ТОРТ 9
+  ============================================================ -->
+  <article class="cake-card">
+    <div class="cake-image">
+      <!-- ФОТО: замени src на путь к своей картинке, например: src="tort1.jpg" -->
+    <img src="9.png" alt="Торт 9">
+      <div class="no-img"></div>
+    </div>
+    <div class="cake-content">
+      <div class="cake-name"><h2>«Облепиха в шоколаде»</h2></div>
+      <div class="field">
+        <span class="field-lbl">Вкус</span>
+        <p class="field-val">Облепиха, шоколад </p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Описание</span>
+        <p>
+🍫 Шоколадный бисквит — насыщенный, плотный, с глубоким вкусом.<p></p>
+🧡 Пропитка облепиховая — яркая, с кислинкой, идеально дружит с шоколадом.<p></p>
+🥄 Шоколадный крем с тёмным шоколадом — для настоящих шокоголиков.<p></p>
+🍮 Облепиховое кремю — нежный ягодный диск внутри.<p></p>
+🍯 Намелака с облепихой — ещё один слой с этой солнечной ягодой.<p></p>
+🍰 Покрытие — ганаш на белом шоколаде, гладкий и бархатистый.<p></p>
+<p><p><p></p>Этот торт — как эксперимент, который удался на <b>100%</b> Облепиха добавляет свежести и кислинки, а шоколад делает вкус благородным и глубоким.
+</p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Цена за 1 кг - 2200₽</span>
+        <p class="field-val"></p>
+      </div>
+      <div class="tags">
+        <span class="tag">черничный</span>
+        <span class="tag">молочный</span>
+        <span class="tag">насыщенный</span>
+        
+      </div>
+    </div>
+  </article>
+     <!-- ============================================================
+       ТОРТ 10
+  ============================================================ -->
+  <article class="cake-card">
+    <div class="cake-image">
+      <!-- ФОТО: замени src на путь к своей картинке, например: src="tort1.jpg" -->
+    <img src="10.png" alt="Торт 10">
+      <div class="no-img"></div>
+    </div>
+    <div class="cake-content">
+      <div class="cake-name"><h2>«Манго-персик-эрл грей»</h2></div>
+      <div class="field">
+        <span class="field-lbl">Вкус</span>
+        <p class="field-val">Малина, Черника, </p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Описание</span>
+        <p>🍰 Сливочный бисквит — нежный, мягкий, маслянистый.<p></p>
+☕ Пропитка молочная с чаем Эрл Грей — тонкий бергамотовый аромат пронизывает каждый корж.<p></p>
+🥄 Крем с Эрл Грей — сливочный, чайный, с благородной ноткой.<p></p>
+🍑 Манговое кремю с кусочками персика — два сочных диска внутри.<p></p>
+🥭 Кули из пюре манго — два слоя яркой фруктовой кислинки.<p></p>
+🍰 Покрытие — ганаш на белом шоколаде, нежный и бархатистый.<p></p>
+<p><p><p></p>Этот торт — как чаепитие в английской гостиной, только в десертном формате. Эрл Грей добавляет благородства, а манго с персиком — летней сочности.
+</p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Цена за 1 кг - 2200₽</span>
+        <p class="field-val"></p>
+      </div>
+      <div class="tags">
+        <span class="tag">манговый</span>
+        <span class="tag">молочный</span>
+        <span class="tag">с чайной ноткой</span>
+        
+      </div>
+    </div>
+  </article>
+    <!-- ============================================================
+       ТОРТ 11
+  ============================================================ -->
+  <article class="cake-card">
+    <div class="cake-image">
+      <!-- ФОТО: замени src на путь к своей картинке, например: src="tort1.jpg" -->
+    <img src="11.png" alt="Торт 11">
+      <div class="no-img"></div>
+    </div>
+    <div class="cake-content">
+      <div class="cake-name"><h2>«Клубника-ананас-базилик»</h2></div>
+      <div class="field">
+        <span class="field-lbl">Вкус</span>
+        <p class="field-val">Клубника, ананас, базилик </p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Описание</span>
+        <p>🍓 Бисквит с клубникой — сочный, ягодный, с натуральным вкусом.<p></p>
+🥛 Молочная пропитка — делает его нежным и влажным.<p></p>
+🧀 Крем с маскарпоне — воздушный, сливочный, тает во рту.<p></p>
+🍍 Клубничный мармелад с ананасами — два диска яркой кисло-сладкой фруктовости.<p></p>
+🌿 Базиликовый ганаш — два слоя с неожиданной пряной ноткой, которая переворачивает всё восприятие.<p></p>
+🍰 Покрытие — масляный крем с шоколадом, гладкий и бархатистый.<p></p>
+<p><p><p></p>Этот торт — для тех, кто любит удивляться. Базилик в десерте звучит смело, но поверьте, это гениальное сочетание с ягодами и фруктами. 
+</p>
+      </div>
+      <div class="field">
+        <span class="field-lbl">Цена за 1 кг - 2200₽</span>
+        <p class="field-val"></p>
+      </div>
+      <div class="tags">
+        <span class="tag">Фруктовый</span>
+        <span class="tag">молочный</span>
+        <span class="tag">насыщенный</span>
+        
+      </div>
+    </div>
+  </article>
+</section>
+
+<footer><h1>© 2026 · Вкусные торты для вашего настроения    </h1><p style="font-size: 3px;">Все фотографии взяты с платных курсов и не имеют никакого отношения к автору. Эти фотографии явлются лишь примерным видом торта.</p></footer>
+
+<script>
+  // Анимация карточек при скролле
+  const cards = document.querySelectorAll('.cake-card');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  cards.forEach(c => obs.observe(c));
+</script>
+</body>
+</html>

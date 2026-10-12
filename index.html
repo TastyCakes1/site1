@@ -395,9 +395,19 @@
 <!-- ФОТО + СЕРТИФИКАТ -->
 <!-- Замени src="tort_main.jpg" и src="sertifikat.jpg" на свои файлы -->
 <section class="about-section">
- 
+  <div class="about-grid">
     <div class="cert-wrap">
       <img src="sertifikat.jpg" alt="Сертификат" onerror="this.style.display='none'">
+      <div class="no-img">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <circle cx="12" cy="4" r="4"/><path d="M9 12l-4 8 7-3 7 3-4-8"/>
+        </svg>
+        <span>Сертификат</span>
+      </div>
+      <span class="cert-badge">Сертификат</span>
+    </div>
+    <div class="cert-wrap">
+      <img src="sertifikat2.jpg" alt="Сертификат" onerror="this.style.display='none'">
       <div class="no-img">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
           <circle cx="12" cy="4" r="4"/><path d="M9 12l-4 8 7-3 7 3-4-8"/>
@@ -423,7 +433,7 @@
 <!-- СТАТИСТИКА -->
 <section class="stats-section">
   <div class="stat">
-    <div class="stat-num">1<em>1</em></div>
+    <div class="stat-num">1<em>2</em></div>
     <p class="stat-label">вкусов в меню</p>
   </div>
   <div class="stat">
@@ -516,7 +526,7 @@
           <span class="desc-summary">Как банановое молоко в шоколаде, только в миллион раз вкуснее.</span>
         </p>
       </div>
-      <p class="price-lbl">Цена за 1 кг  -  2000 ₽</p>
+      <p class="price-lbl">Цена за 1 кг  -  2200 ₽</p>
       <div class="tags"><span class="tag">сладкий</span><span class="tag">насыщенный</span><span class="tag">шоколадный</span></div>
     </div>
   </article>
@@ -777,6 +787,30 @@
     </div>
   </article>
 
+  <!-- ТОРТ 12 -->
+  <article class="cake-card" id="cake-12">
+    <div class="cake-image">
+      <img src="12.png" alt="ИзиМёд" onerror="this.style.display='none'">
+      <div class="no-img"></div>
+    </div>
+    <div class="cake-content">
+      <div class="cake-num">12</div>
+      <h2 class="cake-name">«ИзиМёд»</h2>
+      <div class="field"><span class="field-lbl">Вкус</span><p class="field-val">Мёд, чернослив, грецкий орех</p></div>
+      <div class="field">
+        <span class="field-lbl">Описание</span>
+        <p class="desc">
+          <span class="desc-line">🍯 Медовый бисквит с медовой пропиткой  -  нежный, сочный, тает во рту.</span>
+          <span class="desc-line">🥄 Сырно-сметанный крем  -  воздушный, сливочный, с лёгкой кислинкой.</span>
+          <span class="desc-line">🌰 Чернослив с грецкими орехами  -  два слоя с яркой изюминкой и приятным хрустом.</span>
+          <span class="desc-line">🍰 Покрытие  -  крем-чиз на сливочном масле, гладкий и бархатистый.</span>
+          <span class="desc-summary">Нежный, ароматный, с мягкой медовой сладостью. Каждый кусочек  -  гармония вкуса, от которой сложно оторваться.</span>
+        </p>
+      </div>
+      <p class="price-lbl">Цена за 1 кг  -  2000 ₽</p>
+      <div class="tags"><span class="tag">медовый</span><span class="tag">ореховый</span><span class="tag">нежный</span></div>
+    </div>
+  </article>
 </section>
 
 <footer>
@@ -797,7 +831,7 @@
   const cakeNames = [
     'Банан-Шоколад','Сгущёнка-Орехи','Халва-Кофе','Вишня-Шоколад',
     'Арахис-Крекер','Апельсин-Малина','Цитрус микс','Малина-Черника',
-    'Облепиха','Манго-Персик','Клубника-Ананас'
+    'Облепиха','Манго-Персик','Клубника-Ананас','ИзиМёд'
   ];
   const nav = document.getElementById('cake-nav');
   cakeNames.forEach((name, i) => {
